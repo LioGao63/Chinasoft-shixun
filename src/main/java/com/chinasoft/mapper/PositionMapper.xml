@@ -3,3 +3,31 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.chinasoft.mapper.PositionMapper">
+
+
+    <select id="selectAll" resultType="com.chinasoft.pojo.Position">
+        select * from position
+    </select>
+
+    <delete id="deletePos">
+        delete from position
+        where Pid in
+        <foreach collection="list" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+    <insert id="insertPos">
+        insert into `position`(Pname, Pdetail) values (#{pName}, #{pDetail})
+    </insert>
+
+    <update id="updatePos">
+        update position set Pname=#{pName}, Pdetail=#{pDetail}
+        where Pid = #{pId}
+    </update>
+
+    <select id="selectPosById" resultType="com.chinasoft.pojo.Position">
+        select * from position where Pid=#{id}
+    </select>
+
+</mapper>

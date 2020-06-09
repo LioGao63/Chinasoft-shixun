@@ -2,21 +2,21 @@ package com.chinasoft.pojo;
 
 public class Position {
 
-    private int pId;
+    private Long pId;
     private String pName;
     private String pDetail;
 
-    public Position(int pId, String pName, String pDetail) {
+    public Position(Long pId, String pName, String pDetail) {
         this.pId = pId;
         this.pName = pName;
         this.pDetail = pDetail;
     }
 
-    public int getpId() {
+    public Long getpId() {
         return pId;
     }
 
-    public void setpId(int pId) {
+    public void setpId(Long pId) {
         this.pId = pId;
     }
 
