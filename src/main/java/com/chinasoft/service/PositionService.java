@@ -16,4 +16,8 @@ public interface PositionService {
     void updatePos(Position position);
 
     Position selectPosById(Long id);
+
+    int countPos();
+
+    List<Position> selectPosByPage(int page);
 }

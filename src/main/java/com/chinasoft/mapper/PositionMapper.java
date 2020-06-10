@@ -21,4 +21,10 @@ public interface PositionMapper {
 
     //根据id查询职位
     Position selectPosById(Long id);
+
+    //查询职位个数
+    int countPos();
+
+    //分页查询
+    List<Position> selectPosByPage(int page);
 }

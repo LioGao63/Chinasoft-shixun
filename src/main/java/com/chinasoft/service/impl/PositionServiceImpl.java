@@ -34,4 +34,10 @@ public class PositionServiceImpl implements PositionService {
     public Position selectPosById(Long id){
         return posMapper.selectPosById(id);
     }
+
+    public int countPos(){ return posMapper.countPos();}
+
+    public List<Position> selectPosByPage(int page) {
+        return posMapper.selectPosByPage(page);
+    }
 }

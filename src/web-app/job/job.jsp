@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" isELIgnored="false" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -62,6 +63,27 @@
 	 		   }
 	 	   })
 	    })
+
+		$("#jumpToCon").click(function submit() {
+			var page = $("#page");
+			var lastPage = $("#lastPage");
+			console.log(lastPage);
+			var msg = "";
+			if($.trim(page.val()) == ""){
+				msg = "页数不能为空";
+				$.ligerDialog.error(msg);
+				page.focus();
+				return false;
+			}else if($.trim(page.val()) > $.trim(lastPage.val())) {
+				msg = "访问页数不存在";
+				$.ligerDialog.error(msg);
+				page.focus()
+				return false;
+			}else{
+				$("#jumpToCon").submit();
+				return true;
+			}
+		})
 	</script>
 </head>
 <body>
@@ -122,47 +144,53 @@
 
 				</tr>
 			</c:forEach>
-
-			
-<!--				<tr id="data_1" align="center" class="main_trbg" style="background-color: rgb(255, 255, 255);">-->
-<!--					<td><input type="checkbox" id="box_1" value="2"></td>-->
-<!--					 <td>Java开发工程师</td>-->
-<!--					  <td>Java开发工程师</td>-->
-<!--					  -->
-<!--					 <td align="center" width="40px;"><a href="showUpdateJob.jsp">-->
-<!--							<img title="修改" src="../images/update.gif"></a>-->
-<!--					  </td>-->
-<!--					   -->
-<!--				</tr>-->
-<!--			-->
-<!--				<tr id="data_2" align="center" class="main_trbg" style="background-color: rgb(255, 255, 255);">-->
-<!--					<td><input type="checkbox" id="box_2" value="3"></td>-->
-<!--					 <td>Java中级开发工程师</td>-->
-<!--					  <td>Java中级开发工程师</td>-->
-<!--					  -->
-<!--					 <td align="center" width="40px;"><a href="showUpdateJob.jsp">-->
-<!--							<img title="修改" src="../images/update.gif"></a>-->
-<!--					  </td>-->
-<!--					   -->
-<!--				</tr>-->
-<!--			-->
-<!--				<tr id="data_3" align="center" class="main_trbg" style="background-color: rgb(255, 255, 255);">-->
-<!--					<td><input type="checkbox" id="box_3" value="4"></td>-->
-<!--					 <td>Java高级开发工程师</td>-->
-<!--					  <td>Java高级开发工程师</td>-->
-<!--					  -->
-<!--					 <td align="center" width="40px;"><a href="showUpdateJob.jsp">-->
-<!--							<img title="修改" src="../images/update.gif"></a>-->
-<!--					  </td>-->
-<!--					   -->
-<!--				</tr>-->
-			
 		  </tbody></table>
 		</td>
 	  </tr>
 	  <!-- 分页标签 -->
 	  <tr valign="top"><td align="center" class="font3">
-	  	<table width="100%" align="center" style="font-size:13px;" class="digg"><tbody><tr><td style="COLOR: #0061de; MARGIN-RIGHT: 3px; PADDING-TOP: 2px; TEXT-DECORATION: none"><span class="disabled">上一页</span><span class="current">1</span><a href="#">2</a><a href="#">3</a><a href="#">下一页</a>&nbsp;跳转到&nbsp;&nbsp;<input style="text-align: center;BORDER-RIGHT: #aaaadd 1px solid; PADDING-RIGHT: 5px; BORDER-TOP: #aaaadd 1px solid; PADDING-LEFT: 5px; PADDING-BOTTOM: 2px; MARGIN: 2px; BORDER-LEFT: #aaaadd 1px solid; COLOR: #000099; PADDING-TOP: 2px; BORDER-BOTTOM: #aaaadd 1px solid; TEXT-DECORATION: none" type="text" size="2" id="pager_jump_page_size">&nbsp;<input type="button" style="text-align: center;BORDER-RIGHT: #dedfde 1px solid; PADDING-RIGHT: 6px; BACKGROUND-POSITION: 50% bottom; BORDER-TOP: #dedfde 1px solid; PADDING-LEFT: 6px; PADDING-BOTTOM: 2px; BORDER-LEFT: #dedfde 1px solid; COLOR: #0061de; MARGIN-RIGHT: 3px; PADDING-TOP: 2px; BORDER-BOTTOM: #dedfde 1px solid; TEXT-DECORATION: none" value="确定" id="pager_jump_btn"></td></tr><tr align="center"><td style="font-size:13px;"></td></tr><tr><td style="COLOR: #0061de; MARGIN-RIGHT: 3px; PADDING-TOP: 2px; TEXT-DECORATION: none">总共<font color="red">9</font>条记录，当前显示1-4条记录。</td></tr></tbody></table>
+	  	<table width="100%" align="center" style="font-size:13px;" class="digg">
+			<tbody>
+			<tr>
+				<td style="COLOR: #0061de; MARGIN-RIGHT: 3px; PADDING-TOP: 2px; TEXT-DECORATION: none">
+					<c:if test="${currentPage==1}">
+						<span class="disabled">上一页</span>
+					</c:if>
+					<c:if test="${currentPage!=1}">
+						<a href="/getAllPos?page=${currentPage-1}">上一页</a>
+					</c:if>
+					<c:forEach begin="1" end="${lastPage}" var="curr">
+						<c:if test="${currentPage==curr}">
+							<span class="current">${curr}</span>
+						</c:if>
+						<c:if test="${currentPage!=curr}">
+							<a href="/getAllPos?page=${curr}">${curr}</a>
+						</c:if>
+					</c:forEach>
+						<c:if test="${currentPage==lastPage}">
+							<span class="disabled">下一页</span>
+						</c:if>
+						<c:if test="${currentPage!=lastPage}">
+							<a href="/getAllPos?page=${currentPage+1}">下一页</a>
+						</c:if>
+						&nbsp;跳转到&nbsp;&nbsp;
+								<form action="/getAllPos" name="jumpToCon">
+									<input type="hidden" value="${lastPage}" name="lastPage">
+									<input style="text-align: center;BORDER-RIGHT: #aaaadd 1px solid; PADDING-RIGHT: 5px; BORDER-TOP: #aaaadd 1px solid; PADDING-LEFT: 5px; PADDING-BOTTOM: 2px; MARGIN: 2px; BORDER-LEFT: #aaaadd 1px solid; COLOR: #000099; PADDING-TOP: 2px; BORDER-BOTTOM: #aaaadd 1px solid; TEXT-DECORATION: none" type="text" size="2" name="page">&nbsp;
+									<input type="button" style="text-align: center;BORDER-RIGHT: #dedfde 1px solid; PADDING-RIGHT: 6px; BACKGROUND-POSITION: 50% bottom; BORDER-TOP: #dedfde 1px solid; PADDING-LEFT: 6px; PADDING-BOTTOM: 2px; BORDER-LEFT: #dedfde 1px solid; COLOR: #0061de; MARGIN-RIGHT: 3px; PADDING-TOP: 2px; BORDER-BOTTOM: #dedfde 1px solid; TEXT-DECORATION: none" value="确定" name="pager_jump_btn" onclick="submit()"></form>
+				</td>
+			</tr>
+			<tr align="center">
+				<td style="font-size:13px;">
+
+				</td>
+			</tr>
+			<tr>
+				<td style="COLOR: #0061de; MARGIN-RIGHT: 3px; PADDING-TOP: 2px; TEXT-DECORATION: none">总共<font color="red">${count}</font>条记录，当前显示${currentPage*10-9}-${currentPage*10}条记录。
+				</td>
+			</tr>
+			</tbody>
+		</table>
 	  </td></tr>
 	</table>
 	<div style="height:10px;"></div>

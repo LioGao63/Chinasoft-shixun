@@ -37,4 +37,5 @@ public class UserMapperServiceImpl implements UserMapperService {
 	public void updateUser(int id, String username){
 		mapper.updateUser(id, username);
 	}
+
 }

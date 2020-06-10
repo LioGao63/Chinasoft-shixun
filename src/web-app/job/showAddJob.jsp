@@ -21,7 +21,7 @@
 	<script src="../js/ligerUI/js/plugins/ligerResizable.js" type="text/javascript"></script>
 	<link href="../css/pager.css" type="text/css" rel="stylesheet" />
 	<script type="text/javascript">
-function submit(){
+	function submit(){
 	    	/** 职位表单提交 */
 			//$("#jobForm").submit(function(){
 				var name = $("#name");

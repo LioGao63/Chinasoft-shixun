@@ -17,10 +17,15 @@ public class PositionController {
     PositionServiceImpl posService;
 
     @RequestMapping("/getAllPos")
-    public ModelAndView selectAll(){
-        List<Position> lists = posService.selectAll();
+    public ModelAndView selectAll(int page){
+        List<Position> lists = posService.selectPosByPage((page-1)*10);
         ModelAndView mav = new ModelAndView();
+        int count = posService.countPos();
+        int lastPage = (count-1)/10 + 1;
+        mav.addObject("count", count);
         mav.addObject("posList", lists);
+        mav.addObject("lastPage", lastPage);
+        mav.addObject("currentPage", page);
         mav.setViewName("job/job");
         return mav;
     }
@@ -33,21 +38,21 @@ public class PositionController {
             list.add(ids[i]);
         }
         posService.deletePos(list);
-        return "redirect:/getAllPos";
+        return "redirect:/getAllPos?page=1";
     }
 
     @RequestMapping("/insertPos")
     public String insertPos(String name, String detail){
         Position pos = new Position((long) 0, name, detail);
         posService.insertPos(pos);
-        return "redirect:/getAllPos";
+        return "redirect:/getAllPos?page=1";
     }
 
     @RequestMapping("/updatePos")
     public String updatePos(Long id, String name, String detail){
         Position pos = new Position(id, name, detail);
         posService.updatePos(pos);
-        return "redirect:/getAllPos";
+        return "redirect:/getAllPos?page=1";
 
     }
 
