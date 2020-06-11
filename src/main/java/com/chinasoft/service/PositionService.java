@@ -20,4 +20,6 @@ public interface PositionService {
     int countPos();
 
     List<Position> selectPosByPage(int page);
+
+    List<Position> searchPos(String name);
 }

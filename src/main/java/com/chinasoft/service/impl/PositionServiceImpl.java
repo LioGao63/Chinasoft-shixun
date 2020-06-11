@@ -40,4 +40,8 @@ public class PositionServiceImpl implements PositionService {
     public List<Position> selectPosByPage(int page) {
         return posMapper.selectPosByPage(page);
     }
+
+    public List<Position> searchPos(String name){
+        return posMapper.searchPos(name);
+    }
 }

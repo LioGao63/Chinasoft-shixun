@@ -37,4 +37,8 @@
     <select id="selectPosByPage" resultType="com.chinasoft.pojo.Position">
         select * from `position` limit #{page}, 10
     </select>
+
+    <select id="searchPos" resultType="com.chinasoft.pojo.Position">
+        select * from `position` where Pname like '%"#{name}"%'
+    </select>
 </mapper>

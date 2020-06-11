@@ -27,4 +27,7 @@ public interface PositionMapper {
 
     //分页查询
     List<Position> selectPosByPage(int page);
+
+    //模糊搜索
+    List<Position> searchPos(String name);
 }

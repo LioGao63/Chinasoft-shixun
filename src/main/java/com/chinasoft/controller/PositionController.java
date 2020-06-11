@@ -64,4 +64,18 @@ public class PositionController {
         mav.setViewName("job/showUpdateJob");
         return mav;
     }
+
+    @RequestMapping("/searchPos")
+    public ModelAndView searchPosById(int page, String name){
+        List<Position> lists = posService.searchPos(name);
+        ModelAndView mav = new ModelAndView();
+        int count = lists.size();
+        int lastPage = (count-1)/10 + 1;
+        mav.addObject("count", count);
+        mav.addObject("posList", lists);
+        mav.addObject("lastPage", lastPage);
+        mav.addObject("currentPage", page);
+        mav.setViewName("job/job");
+        return mav;
+    }
 }
