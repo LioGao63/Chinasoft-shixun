@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chinasoft.mapper.AnnouncementMapper">
+
+    <!-- 开启二级缓存 -->
+    <cache />
+
+<!-- 考虑分页查询   -->
+    <!--    搜索查询公告-->
+    <select id="selectAnnouncement" parameterType="com.chinasoft.pojo.Announcement" resultType="com.chinasoft.pojo.Announcement">
+        select * from announcement
+        <where>
+        <if test="title!=''">
+            title like "%"#{title}"%"
+        </if>
+        <if test="content!=''">
+            OR content like "%"#{content}"%"
+        </if>
+    </where>
+    </select>
+
+<!--    初始查看所有公告-->
+    <select id="selectAllAnnouncement" resultType="com.chinasoft.pojo.Announcement">
+        select * from announcement
+    </select>
+    
+<!--    浏览公告-->
+    <select id="browseAnnouncement" parameterType="long" resultType="com.chinasoft.pojo.Announcement">
+        select * from announcement where Aid=#{Aid}
+    </select>
+
+    <!--    修改公告    -->
+    <update id="updateAnnouncement" parameterType="com.chinasoft.pojo.Announcement">
+        update announcement set title=#{title},content=#{content} where Aid=#{Aid}
+    </update>
+
+    <!--    添加公告-->
+    <insert id="insertAnnouncement" parameterType="com.chinasoft.pojo.Announcement">
+        insert into announcement (title,content,uploader,uploadDate) values (#{title},#{content},#{uploader},#{uploadDate})
+    </insert>
+
+<!--    删除公告-->
+    <delete id="deleteAnnouncement">
+        delete from announcement where Aid in
+        <foreach item="item" index="index" collection="list" open="("
+                 separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+<!--    修改公告时的查找跳转-->
+    <select id="selectAnnouncementById" resultType="com.chinasoft.pojo.Announcement">
+        select * from announcement where Aid=#{id}
+    </select>
+    <!--    -->
+
+<!--    分页查询部分-->
+    <select id="countAn" resultType="int">
+        select count(*) from announcement
+    </select>
+
+<!--    offset (page-1)*10 limit 10-->
+<!--    (page-1)*10=#{page}-->
+    <select id="selectAnByPage" resultType="com.chinasoft.pojo.Announcement">
+        select * from announcement limit #{page}, 10
+    </select>
+
+
+
+
+
+</mapper>
