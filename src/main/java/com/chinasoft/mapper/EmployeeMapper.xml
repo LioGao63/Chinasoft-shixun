@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chinasoft.mapper.EmployeeMapper">
+
+    <select id="selectAll" resultType="com.chinasoft.pojo.Employee" resultMap="selectEmployee">
+        select * from employee, department,position where employee.d_id = department.Did and employee.p_id = position.Pid
+    </select>
+
+    <insert id="addEmployee" parameterType="com.chinasoft.pojo.Employee">
+        insert into employee(Ename, identity, sex, p_id, record, email, telphone, phone, politic, qq, address, postalcode, birthday, nation, major, habby, note, d_id)
+            values (#{Ename}, #{identity}, #{sex}, #{pid}, #{record}, #{email}, #{telphone}, #{phone}, #{politic}, #{qq}, #{address}, #{postalcode}, #{birthday}, #{nation}, #{major}, #{habby}, #{note}, #{did})
+    </insert>
+    
+    <update id="updateEmployee" parameterType="com.chinasoft.pojo.Employee">
+        update employee set Ename = #{Ename}, identity = #{identity }, sex = #{sex}, p_id = #{pid}, record = #{record}, email = #{email}, telphone = #{telphone},
+            politic = #{politic}, qq = #{qq}, address = #{address}, postalcode = #{postalcode}, birthday = #{birthday}, nation = #{nation}, major = #{major},
+            habby = #{habby}, note = #{note}, d_id = #{did}
+        where Eid = #{eId}
+    </update>
+
+    <delete id="deleteEmployee">
+        delete from employee
+        where Eid in
+        <foreach collection="list" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+    <select id="selectByParam" parameterType="com.chinasoft.pojo.Employee" resultMap="selectEmployee">
+        select * from employee,position ,department where employee.d_id = department.Did and employee.p_id = position.Pid
+            <if test="pid != ''">
+                and employee.p_id = #{pid}
+            </if>
+            <if test="Ename != ''">
+                and employee.Ename = #{Ename}
+            </if>
+            <if test="identity != ''">
+                and employee.identity = #{identity }
+            </if>
+            <if test="sex != ''">
+                and employee.sex = #{sex}
+            </if>
+            <if test="telphone != ''">
+                and employee.telphone = #{telphone}
+            </if>
+            <if test="did != ''">
+                and employee.d_id = #{did}
+            </if>
+    </select>
+    <select id="selectOne" resultMap="selectEmployee" resultType="com.chinasoft.pojo.Employee" parameterType="int">
+        select * from employee where Eid = #{eId}
+    </select>
+    <resultMap id="selectEmployee" type="com.chinasoft.pojo.Employee">
+        <id column="Eid" property="eId"/>
+        <result column="Ename" property="Ename"/>
+        <result column="identity" property="identity"/>
+        <result column="sex" property="sex"/>
+        <result column="record" property="record"/>
+        <result column="email" property="email"/>
+        <result column="telphone" property="telphone"/>
+        <result column="phone" property="phone"/>
+        <result column="politic" property="politic"/>
+        <result column="qq" property="qq"/>
+        <result column="address" property="address"/>
+        <result column="postalcode" property="postalcode"/>
+        <result column="birthday" property="birthday"/>
+        <result column="nation" property="nation"/>
+        <result column="major" property="major"/>
+        <result column="habby" property="habby"/>
+        <result column="note" property="note"/>
+        <result column="creatDate" property="creatDate"/>
+        <result column="p_id" property="pid"/>
+        <result column="d_id" property="did"/>
+        <association property="department" javaType="com.chinasoft.pojo.Department">
+            <id property="dId" column="Did"/>
+            <result property="Dname" column="Dname"/>
+            <result property="detail" column="detail"/>
+        </association>
+        <association property="position" javaType="com.chinasoft.pojo.Position">
+            <id property="pId" column="Pid"/>
+            <result property="pName" column="Pname"/>
+            <result property="pDetail" column="Pdetail"/>
+        </association>
+    </resultMap>
+</mapper>
