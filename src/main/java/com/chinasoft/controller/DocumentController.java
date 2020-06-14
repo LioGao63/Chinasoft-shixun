@@ -58,5 +58,4 @@ public class DocumentController {
         documentService.selectOne(Oid);
         return "redirect:/showUpdateDocument";
     }
-
 }
