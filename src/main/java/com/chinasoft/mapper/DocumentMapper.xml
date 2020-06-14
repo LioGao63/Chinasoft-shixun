@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chinasoft.mapper.DocumentMapper">
+
+	<select id="selectAll" resultType="com.chinasoft.pojo.Document" resultMap="selectDocument">
+        select * from document
+    </select>
+
+	<insert id="addDocument" parameterType="com.chinasoft.pojo.Document">
+        insert into Document(Oid, title, uploadTime, uploader, description)
+            values (#{Oid}, #{title}, #{uploadTime}, #{uploader}, #{description})
+    </insert>
+
+	<update id="updateDocument" parameterType="com.chinasoft.pojo.Document">
+        update document set Oid = #{Oid}, title = #{title },uploadTime = #{uploadTime}, uploader = #{uploader}, description = #{description}
+        where Oid = #{Oid}
+    </update>
+
+	<delete id="deleteDocument">
+		delete from document
+		where Oid in
+		<foreach collection="list" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+
+	<select id="selectByParam" parameterType="com.chinasoft.pojo.Document" resultMap="selectDocument">
+		select * from document
+		<if test="pid != ''">
+			and Oid = #{Oid}
+		</if>
+		<if test="title != ''">
+			and title = #{title}
+		</if>
+		<if test="uploadTime != ''">
+			and uploadTime = #{uploadTime }
+		</if>
+		<if test="uploader != ''">
+			and uploader = #{uploader}
+		</if>
+		<if test="description != ''">
+			and description = #{description}
+		</if>
+
+	</select>
+	<select id="selectOne" resultMap="selectDocument" resultType="com.chinasoft.pojo.Document" parameterType="int">
+        select * from document where Oid = #{Oid}
+    </select>
+	<resultMap id="selectDocument" type="com.chinasoft.pojo.Document">
+		<id column="Oid" property="Oid"/>
+		<result column="title" property="title"/>
+		<result column="uploadTime" property="uploadTime"/>
+		<result column="uploader" property="uploader"/>
+		<result column="description" property="description"/>
+	</resultMap>
+</mapper>
