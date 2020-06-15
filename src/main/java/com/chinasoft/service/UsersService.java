@@ -1,6 +1,6 @@
-package com.ssm.service;
+package com.chinasoft.service;
 
-import com.ssm.model.User;
+import com.chinasoft.model.User;
 
 public interface UsersService {
 

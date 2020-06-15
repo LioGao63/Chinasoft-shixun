@@ -1,4 +1,4 @@
-package com.ssm.model;
+package com.chinasoft.model;
 
 import java.util.ArrayList;
 import java.util.List;

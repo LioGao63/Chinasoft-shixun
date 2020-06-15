@@ -1,4 +1,4 @@
-package com.ssm;
+package com.chinasoft;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

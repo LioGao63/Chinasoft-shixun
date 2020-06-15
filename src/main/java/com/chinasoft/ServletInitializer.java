@@ -1,4 +1,4 @@
-package com.ssm;
+package com.chinasoft;
 
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;

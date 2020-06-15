@@ -1,10 +1,9 @@
-package com.ssm.controller;
+package com.chinasoft.controller;
 
 
-import com.alibaba.fastjson.JSON;
-import com.ssm.model.User;
-import com.ssm.service.UsersService;
-import com.ssm.vo.ResponseData;
+import com.chinasoft.model.User;
+import com.chinasoft.service.UsersService;
+import com.chinasoft.vo.ResponseData;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -12,8 +11,6 @@ import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.TreeMap;
 
 @Api(description = "接口", value = "接口" ,protocols = "JSON")
 @ResponseBody

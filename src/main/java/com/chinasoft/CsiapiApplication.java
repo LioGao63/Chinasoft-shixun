@@ -1,4 +1,4 @@
-package com.ssm;
+package com.chinasoft;
 
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;

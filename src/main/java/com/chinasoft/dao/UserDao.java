@@ -1,7 +1,7 @@
-package com.ssm.dao;
+package com.chinasoft.dao;
 
-import com.ssm.model.User;
-import com.ssm.model.UserExample;
+import com.chinasoft.model.User;
+import com.chinasoft.model.UserExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;

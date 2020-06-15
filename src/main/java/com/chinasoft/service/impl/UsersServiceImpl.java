@@ -1,9 +1,9 @@
-package com.ssm.service.impl;
+package com.chinasoft.service.impl;
 
-import com.ssm.dao.UserDao;
-import com.ssm.model.User;
-import com.ssm.model.UserExample;
-import com.ssm.service.UsersService;
+import com.chinasoft.dao.UserDao;
+import com.chinasoft.model.User;
+import com.chinasoft.model.UserExample;
+import com.chinasoft.service.UsersService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;

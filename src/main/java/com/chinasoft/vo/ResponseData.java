@@ -1,4 +1,4 @@
-package com.ssm.vo;
+package com.chinasoft.vo;
 
 import java.util.HashMap;
 import java.util.Map;
