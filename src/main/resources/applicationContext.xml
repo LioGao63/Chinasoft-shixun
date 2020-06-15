@@ -20,24 +20,11 @@
             http://www.springframework.org/schema/context
             http://www.springframework.org/schema/context/spring-context-4.0.xsd">
 
-    <!--整合mybatis
-            sqlseesionFactroyBuilder
-            sqlsessionFactory
-            sqlSession
-            映射器
-            dataSource
-            typeAlies
-
-            事务
-
-      -->
-    <!--引入db.properties的文件 -->
-    <context:property-placeholder location="classpath:db.properties"/>
 
     <!--配置数据源  -->
     <bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource" destroy-method="close">
-        <property name="driverClassName" value="${driver}" />
-        <property name="url" value="${url}" />
+        <property name="driverClassName" value="com.mysql.cj.jdbc.Driver" />
+        <property name="url" value="jdbc:mysql://localhost:3307/csi?serverTimezone=UTC" />
         <property name="username" value="root" />
         <property name="password" value="123456" />
     </bean>

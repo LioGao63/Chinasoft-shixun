@@ -1,25 +1,29 @@
 package com.chinasoft.pojo;
 
-public class Department {
-    private int dId;
+import java.io.Serializable;
+
+public class Department implements Serializable {
+    private Long Did;
     private String Dname;
     private String detail;
 
-    public Department() {
-    }
-
-    public Department(int dId, String dname, String detail) {
-        this.dId = dId;
+    public Department(long did, String dname, String detail) {
+        Did = did;
         Dname = dname;
         this.detail = detail;
     }
 
-    public int getdId() {
-        return dId;
+    public Department(String dname, String detail) {
+        Dname = dname;
+        this.detail = detail;
     }
 
-    public void setdId(int dId) {
-        this.dId = dId;
+    public Long getDid() {
+        return Did;
+    }
+
+    public void setDid(Long did) {
+        Did = did;
     }
 
     public String getDname() {
@@ -41,9 +45,11 @@ public class Department {
     @Override
     public String toString() {
         return "Department{" +
-                "dId=" + dId +
+                "Did=" + Did +
                 ", Dname='" + Dname + '\'' +
                 ", detail='" + detail + '\'' +
                 '}';
     }
+
+
 }

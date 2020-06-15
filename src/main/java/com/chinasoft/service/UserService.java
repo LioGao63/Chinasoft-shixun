@@ -1,9 +1,9 @@
-package com.chinasoft.mapper;
+package com.chinasoft.service;
 
 import com.chinasoft.pojo.User;
 
 
-public interface UserMapper {
+public interface UserService {
 
     User selectUser(long id);
 
