@@ -28,16 +28,16 @@ public class UserController {
     @ApiResponses({   @ApiResponse(code = 404,message = "链接错误")})
     @PostMapping(value = "/login")
     public ResponseData login(@RequestParam("user")String user,@RequestParam("password")String password ){
-       int status = usersService.login(user,password);
-       if(status ==-1){
-           ResponseData responseData = ResponseData.unauthorized();
-           responseData.putDataValue("data", "账号密码填写错误");
-           return responseData;
-       }else{
-           ResponseData responseData = ResponseData.ok();
-           responseData.putDataValue("data", "登录成功");
-           return responseData;
-       }
+        int status = usersService.login(user,password);
+        if(status ==-1){
+            ResponseData responseData = ResponseData.unauthorized();
+            responseData.putDataValue("data", "账号密码填写错误");
+            return responseData;
+        }else{
+            ResponseData responseData = ResponseData.ok();
+            responseData.putDataValue("data", "登录成功");
+            return responseData;
+        }
     }
 
 

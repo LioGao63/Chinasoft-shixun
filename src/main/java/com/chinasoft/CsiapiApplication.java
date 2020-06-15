@@ -14,7 +14,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableAsync
 @ServletComponentScan
 @EnableSwagger2
-@MapperScan("com.ssm.dao")
+@MapperScan("com.chinasoft.dao")
 @EnableScheduling
 public class CsiapiApplication {
 

@@ -32,7 +32,7 @@ public class swagger2 {
         return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(apiInfo())
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.ssm.controller"))
+                .apis(RequestHandlerSelectors.basePackage("com.chinasoft.controller"))
                 .paths(PathSelectors.any())
                 .build();
     }

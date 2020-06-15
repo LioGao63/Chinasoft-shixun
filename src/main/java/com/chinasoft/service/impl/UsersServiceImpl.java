@@ -19,13 +19,14 @@ public class UsersServiceImpl implements UsersService {
 
     @Override
     public int login(String user, String password) {
+
         UserExample userExample = new UserExample();
         userExample.createCriteria().andUserEqualTo(user).andPasswordEqualTo(password).andStateEqualTo(2);
         List<User> userList = userDao.selectByExample(userExample);
         if(userList.size()>0){
             return userList.get(0).getUid();
         }else {
-            return-1;
+            return -1;
         }
     }
 
