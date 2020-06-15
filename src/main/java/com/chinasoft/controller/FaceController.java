@@ -7,6 +7,8 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import sun.misc.BASE64Encoder;
@@ -17,7 +19,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 
-
+@RequestMapping("/face")
 @Controller
 public class FaceController {
 
@@ -27,9 +29,48 @@ public class FaceController {
     /*
     * 人脸注册
     * */
-    @RequestMapping("/registerFace")
-    public void registerByFace(MultipartFile face) throws IOException {
+    @RequestMapping(value = "/registerFace", method = RequestMethod.POST)
+    @ResponseBody
+    public void registerByFace(String face) throws IOException {
 
+        HashMap<String, String> options = new HashMap<String, String>();
+        options.put("user_info", "user's info");
+        options.put("quality_control", "NORMAL");
+        options.put("liveness_control", "LOW");
+        options.put("action_type", "REPLACE");
+//        //图像转成base64
+//        BASE64Encoder base64Encoder = new BASE64Encoder();
+//        String encode = null;
+//        InputStream in = null;
+//        byte[] data = null;
+//        try{
+//            in = face.getInputStream();
+//            data = new byte[in.available()];
+//            in.read(data);
+//            encode = base64Encoder.encode(data);
+//            in.close();
+//        }catch (IOException e){
+//            e.printStackTrace();
+//        }
+
+        String image = face;
+        String imageType = "BASE64";
+        String groupId = "group1";
+        String userId = "user1";
+
+        //人脸比对
+        JSONObject res = client.addUser(image, imageType, groupId, userId, options);
+        System.out.println(res.toString(2));
+        ModelAndView mav = new ModelAndView();
+        mav.setViewName("/job/job");
+
+    }
+
+    /*
+    * 人脸比对登录
+    * */
+    @RequestMapping("/loginByFace")
+    public void loginByFace(String face){
         HashMap<String, String> options = new HashMap<String, String>();
         options.put("max_face_num", "1");
         options.put("match_threshold", "80");
@@ -37,26 +78,24 @@ public class FaceController {
         options.put("liveness_control", "LOW");
         options.put("max_user_num", "1");
 
-        //图像准成base64
-        BASE64Encoder base64Encoder = new BASE64Encoder();
-        String encode = null;
-        InputStream in = null;
-        byte[] data = null;
-        try{
-            in = face.getInputStream();
-            data = new byte[in.available()];
-            in.read(data);
-            encode = base64Encoder.encode(data);
-            in.close();
-        }catch (IOException e){
-            e.printStackTrace();
-        }
+//        BASE64Encoder base64Encoder = new BASE64Encoder();
+//        String encode = null;
+//        InputStream in = null;
+//        byte[] data = null;
+//        try{
+//            in = face.getInputStream();
+//            data = new byte[in.available()];
+//            in.read(data);
+//            encode = base64Encoder.encode(data);
+//            in.close();
+//        }catch (IOException e){
+//            e.printStackTrace();
+//        }
 
-        String image = encode;
+        String image = face;
         String imageType = "BASE64";
         String groupIdList = "group1";
 
-        //人脸比对
         JSONObject res = client.search(image, imageType, groupIdList, options);
         String error = res.getString("error_msg");
         //解析json
@@ -69,42 +108,6 @@ public class FaceController {
         }else{
             System.out.println("无");
         }
-
-
-    }
-
-    /*
-    * 人脸比对登录
-    * */
-    @RequestMapping("/loginByFace")
-    public void loginByFace(MultipartFile face){
-        HashMap<String, String> options = new HashMap<String, String>();
-        options.put("max_face_num", "1");
-        options.put("match_threshold", "80");
-        options.put("quality_control", "NORMAL");
-        options.put("liveness_control", "LOW");
-        options.put("max_user_num", "1");
-
-        BASE64Encoder base64Encoder = new BASE64Encoder();
-        String encode = null;
-        InputStream in = null;
-        byte[] data = null;
-        try{
-            in = face.getInputStream();
-            data = new byte[in.available()];
-            in.read(data);
-            encode = base64Encoder.encode(data);
-            in.close();
-        }catch (IOException e){
-            e.printStackTrace();
-        }
-
-        String image = encode;
-        String imageType = "BASE64";
-        String groupIdList = "group1";
-
-        JSONObject res = client.search(image, imageType, groupIdList, options);
-        System.out.println(res.toString(2));
     }
 
 }
