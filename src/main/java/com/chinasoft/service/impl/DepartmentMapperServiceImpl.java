@@ -16,14 +16,19 @@ public class DepartmentMapperServiceImpl implements DepartmentMapperService {
 
 
     @Override
+    public Department confirmAdd(String departmentName) {
+        return mapper.confirmAddByName(departmentName);
+    }
+
+    @Override
     public void addDepartment(Department department) {
         mapper.insertDepartment(department);
     }
 
-    @Override
-    public List<Department> lisAllDepartment() {
-        return mapper.selectAllDepartment();
-    }
+//    @Override
+//    public List<Department> lisAllDepartment() {
+//        return mapper.selectAllDepartment();
+//    }
 
     @Override
     public void deleteOneDepartment(List<Long> ids) {

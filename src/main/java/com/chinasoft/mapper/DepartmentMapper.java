@@ -12,6 +12,9 @@ public interface DepartmentMapper{
     //添加部门
     public void insertDepartment(Department department);
 
+    //添加部门时进行验证是否有重复
+    public Department confirmAddByName(String name);
+
     //删除全部选中的部门
     public void deleteDepartment(List<Long> ids);
 

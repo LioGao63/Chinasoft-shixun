@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,33 +19,20 @@ public class DepartmentMapperController {
     DepartmentMapperServiceImpl service;
 
     @RequestMapping("/addDepartment")
-    public String addDepartment(String dname, String detail){
-        System.out.println("addDepartment");
-        System.out.println("dname="+dname);
-        System.out.println("detail="+detail);
+    public ModelAndView addDepartment(HttpServletRequest request, String dname, String detail){
 
-        Department department = new Department(dname,detail);
-        service.addDepartment(department);
-
-        return "dept/dept";
-    }
-
-    @RequestMapping("/listFirstPage")
-    public ModelAndView listFirstPage() {
-        System.out.println("listFirstPage");
-
-        List<Department> firstList = service.selectByPages(0);
-        System.out.println("list="+firstList);
         ModelAndView mav = new ModelAndView();
-        int count = service.countDepartment();
-        int lastPage = (count-1)/10+1;
 
-        mav.addObject("firstList",firstList);
-        mav.addObject("count", count);
-        mav.addObject("lastPage", lastPage);
-        mav.addObject("currentPage", 1);
-        mav.setViewName("dept/dept");
-
+        Department confirm = service.confirmAdd(dname);
+        if (confirm == null){
+            Department department = new Department(dname,detail);
+            service.addDepartment(department);
+            mav.addObject("success_state",1);
+            mav.setViewName("dept/dept");
+        }else {
+            mav.addObject("success_state",0);
+            mav.setViewName("dept/showAddDept");//将变量传到jsp,要设置setViewName
+        }
         return mav;
     }
 
@@ -58,12 +46,14 @@ public class DepartmentMapperController {
         ModelAndView mav = new ModelAndView();
         int count = service.countDepartment();
         int lastPage = (count-1)/10+1;
+        int searchJudge = 0;
 
-       // mav.addObject("firstList",list);
+        mav.addObject("firstList",list);
         mav.addObject("count", count);
-        mav.addObject("posList", list);
         mav.addObject("lastPage", lastPage);
         mav.addObject("currentPage", page);
+        mav.addObject("searchPageJudge",searchJudge);
+
         mav.setViewName("dept/dept");
 
         return mav;
@@ -80,75 +70,51 @@ public class DepartmentMapperController {
         }
         service.deleteOneDepartment(list);
 
-        return "redirect:/lisAllDepartment?page=1";
+        return "redirect:/department/lisAllDepartment?page=1";
     }
 
     @RequestMapping("/updateOneDepartment")
-    public String updateOneDepartment(int id, String name ,String detail) {
+    public String updateOneDepartment(HttpServletRequest request,Long did, String dname , String detail) {
         System.out.println("addDepartment");
-        System.out.println("id="+id);
-        System.out.println("name="+name);
+
+        did = Long.parseLong(request.getParameter("ud_after_id"));
+        dname = request.getParameter("ud_after_dname");
+        detail = request.getParameter("ud_after_detail");
+
+        System.out.println("id="+did);
+        System.out.println("name="+dname);
         System.out.println("detail="+detail);
 
-        Department department= new Department(id,name,detail);
+        Department department= new Department(did,dname,detail);
         service.updateOneDepartment(department);
 
-        return "redirect:/lisAllDepartment?page=1";
+        return "redirect:/department/lisAllDepartment?page=1";
     }
 
     @RequestMapping("/searchDepartment")
-    public ModelAndView searchDepartment(String departmentName) {
+    public ModelAndView searchDepartment(HttpServletRequest request,String departmentName) {
+        //departmentName = request.getParameter("keyWord");
         System.out.println("addDepartment");
         System.out.println("departmentName="+departmentName);
 
-        List<Department> list = service.searchDepartment(departmentName);
+        String proDepartment = departmentName.replace(" ","");
+
+        List<Department> list = service.searchDepartment(proDepartment);
+        int count = list.size();
+        int lastPage = (count-1)/10+1;
+        int page = 1;
+        int searchJudge = 1;
+
         ModelAndView mav = new ModelAndView();
-        mav.addObject("searchList",list);
+        mav.addObject("firstList",list);
+        mav.addObject("count", count);
+        mav.addObject("lastPage", lastPage);
+        mav.addObject("currentPage", page);
+        mav.addObject("searchPageJudge",searchJudge);
+
         mav.setViewName("dept/dept");
 
         return mav;
     }
 
-
-
-
-
-
-//
-//    @RequestMapping("/test2")
-//    public ModelAndView test2(int page){
-//        //ModelAndView mav = new ModelAndView();
-//
-//        System.out.println("addDepartment");
-//        System.out.println("page="+page);
-//
-//        List<Department> list = service.selectByPages((page-1)*10);
-//        System.out.println("list="+list);
-//        ModelAndView mav = new ModelAndView();
-//        int count = service.countDepartment();
-//        int lastPage = (count-1)/10+1;
-//        mav.addObject("count", count);
-//        mav.addObject("posList", list);
-//        mav.addObject("lastPage", lastPage);
-//        mav.addObject("currentPage", page);
-//       // mav.setViewName("dept/dept");
-//
-//
-//        mav.addObject("name1", "1254");
-//        mav.addObject("pass1","1215");
-//        mav.addObject("message","hello");
-//        mav.setViewName("test");
-//
-//        return mav;
-//    }
-//
-//    @RequestMapping("/test1")
-//    public void test1(){
-//        String name="nihao";
-//        String detail = "whooou";
-//
-//        Department department = new Department(name,detail);
-//        service.addDepartment(department);
-//        System.out.println("success");
-//    }
 }

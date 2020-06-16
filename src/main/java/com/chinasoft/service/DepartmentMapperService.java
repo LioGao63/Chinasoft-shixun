@@ -6,11 +6,14 @@ import java.util.List;
 
 public interface DepartmentMapperService {
 
+    //添加部门验证是否重复
+    public Department confirmAdd(String departmentName);
+
     //添加部门
     public void addDepartment(Department department);
 
     //列出所有部门
-    public List<Department> lisAllDepartment();
+    //public List<Department> lisAllDepartment();
 
     //删除特定部门
     public void deleteOneDepartment(List<Long> ids);
