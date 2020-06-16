@@ -16,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import sun.misc.BASE64Encoder;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -26,39 +27,44 @@ import java.util.HashMap;
 @Controller
 public class FaceController {
 
-//    @Autowired
-//    UserServiceImpl service;
-
-    //人脸识别client
-//    private static AipFace client = FaceApiConfig.getClient();
     @Autowired
     UserServiceImpl service;
+
     /*
     * 人脸注册
     * */
     @RequestMapping(value = "/registerFace", method = RequestMethod.POST)
     @ResponseBody
-    public void registerByFace(String face, String username, String user, String password) throws IOException {
-
+    public String registerByFace(HttpServletRequest request) throws IOException {
         HashMap<String, String> options = new HashMap<String, String>();
         options.put("user_info", "user's info");
         options.put("quality_control", "NORMAL");
         options.put("liveness_control", "LOW");
         options.put("action_type", "REPLACE");
+        String face = request.getParameter("face");
+        String username = request.getParameter("username");
+        String user = request.getParameter("user");
+        String password = request.getParameter("password");
 
         User userInfo = new User((long) 0, username, user, password, null, 2);
-        Long id = service.insertUser(userInfo);
+        service.insertUser(userInfo);
+        String id = String.valueOf(userInfo.getUid());
+        System.out.println(id);
         String image = face;
         String imageType = "BASE64";
         String groupId = "group1";
-        String userId = String.valueOf(id);
+        String userId = id;
 
         //人脸比对
         AipFace client = FaceApiConfig.getClient();
+        System.out.println(client);
         JSONObject res = client.addUser(image, imageType, groupId, userId, options);
         System.out.println(res.toString(2));
-        ModelAndView mav = new ModelAndView();
-        mav.setViewName("/job/job");
+        if(res.getString("error_msg").equals("SUCCESS")){
+            return "redirect:main.html";
+        }else{
+            return "fail";
+        }
 
     }
 
@@ -74,19 +80,6 @@ public class FaceController {
         options.put("liveness_control", "LOW");
         options.put("max_user_num", "1");
 
-//        BASE64Encoder base64Encoder = new BASE64Encoder();
-//        String encode = null;
-//        InputStream in = null;
-//        byte[] data = null;
-//        try{
-//            in = face.getInputStream();
-//            data = new byte[in.available()];
-//            in.read(data);
-//            encode = base64Encoder.encode(data);
-//            in.close();
-//        }catch (IOException e){
-//            e.printStackTrace();
-//        }
 
         String image = face;
         String imageType = "BASE64";
@@ -106,5 +99,6 @@ public class FaceController {
             System.out.println("无");
         }
     }
+
 
 }

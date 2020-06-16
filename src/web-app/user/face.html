@@ -3,9 +3,10 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
-<base href="<%=basePath%>">
+	<meta src="../js/login/login.js" http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<base href="<%=basePath%>">
 
-<title>管理员登录</title>
+<title>注册</title>
 <meta http-equiv="pragma" content="no-cache">
 <meta http-equiv="cache-control" content="no-cache">
 <meta http-equiv="expires" content="0">
@@ -16,18 +17,7 @@
 
 <link rel="stylesheet" type="text/css" href="../js/metronic/plugins/face/css/style.css" />
 <script type="text/javascript" src="../js/metronic/plugins/face/js/jquery-1.4.4.min.js"></script>
-<style>
-body {
-	height: 100%;
-	background: #213838;
-	overflow: hidden;
-}
 
-canvas {
-	z-index: -1;
-	position: absolute;
-}
-</style>
 
 
 <script src="../js/metronic/plugins/face/js/jquery.js"></script>
@@ -60,6 +50,10 @@ body {
 	height: 100vh;
 	background-position: center;
 	overflow: hidden;
+}
+
+span{
+	margin-bottom: 0.5px;
 }
 
 h1 {
@@ -97,20 +91,62 @@ h1 {
 	border-radius: 40px;
 }
 </style>
+
+	<link rel="stylesheet" href="../js/metronic/plugins/bootstrap/css/bootstrap.css" />
+	<!-- Font Awesome Icons -->
+	<link rel="stylesheet" href="../login/css/font-awesome.css" />
+	<link rel="stylesheet" href="../js/metronic/plugins/simple-line-icons/css/simple-line-icons.css"/>
+	<link rel="stylesheet" href="../login/css/animate.min.css"/>
+	<style>
+		body {
+			height: 100%;
+			background: #213838;
+			overflow: hidden;
+		}
+
+		canvas {
+			z-index: -1;
+			position: absolute;
+		}
+	</style>
 </head>
 
 <body>
 
 
 		<dl class="admin_login">
-			<dt>
-				<strong>CSI员工之家</strong><em></em> <strong>请把你的脸放摄像头面前</strong>
+			<dt >
+				<strong>CSI员工之家注册</strong><em></em> <strong>请将脸放于摄像头面前</strong>
 			</dt>
 			<div id="media">
 				<video id="video" width="100%" height="300" autoplay></video>
-				<canvas id="canvas" width="530" height="300"></canvas>
+				<canvas id="canvas" width="530" height="200"></canvas>
 			</div>
-			<dd>
+
+
+
+			<div class="formitem" >
+				<span style="padding: 5px" class="icon fa fa-user" ></span>
+				<span style="" class="input" >
+					<input id="loginusername" name="loginusername" value="" class="form-control l35" fv_type="NOTCN" type="text" maxlength="20" placeholder="请输入您的真实姓名" value=""  data-toggle="tooltip" data-placement="right">
+				</span>
+			</div>
+			<div class="formitem" >
+				<span style="padding: 5px" class="icon fa fa-user"></span>
+				<span class="input">
+					<input id="loginname" name="loginname" value="" class="form-control l35" fv_type="NOTCN" type="text" maxlength="20" placeholder="请输入您的用户名" value=""  data-toggle="tooltip" data-placement="right">
+				</span>
+			</div>
+			<div class="formitem">
+				<span style="padding: 5px" class="icon fa fa-key"></span>
+				<span style="margin-bottom: 5px" class="input">
+					<input id="password" name="password" value="" class="form-control highlight_green l35" fv_type="NOTCN" type="password"  maxlength="20" placeholder="请输入您的密码"  data-toggle="tooltip" data-placement="right">
+				</span>
+			</div>
+
+
+
+			<dd >
 				<input type="button" onclick="query()" value="立即注册"
 					class="submit_btn" />
 			</dd>
@@ -154,19 +190,20 @@ h1 {
   				//把流媒体数据画到convas画布上去
   				context.drawImage(video,0,0,530,300);
   				var base = getBase64();
-  				alert("调用成功");
-  				
+  				var username = $("input[name='loginusername']").val();
+  				var user = $("input[name='loginname']").val();
+  				var password = $("input[name='password']").val();
   				$.ajax({
-  					method:"POST",
+  					type:'post',
   					url:"/face/registerFace",
-  					data:{'face':base},
-  					dataType: "json",
-  					success:function(json){
+  					data:{"face":base, "username":username, "user":user, "password":password},
+  					success:function(msg){
   						// $.MsgBox.Alert("消息","注册成功");
-						console.log(json);
+						if(msg=="fail"){
+							alert("注册失败请重试");
+						}
 					}
 				});
-
 			}
 			function getBase64() {
 				var imgSrc = document.getElementById("canvas").toDataURL(

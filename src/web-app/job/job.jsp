@@ -62,28 +62,48 @@
 	 			   });
 	 		   }
 	 	   })
+
+			$("#reset").click(function(){
+				window.location.href = "/getAllPos?page=1";
+			})
+
+			$("#searchByName").click(function () {
+				var name = $("#searchName").val();
+				console.log(name);
+				var msg = "";
+				if($.trim(name)==""){
+					msg="搜索栏不能为空！";
+					$.ligerDialog.error(msg);
+					return false;
+				}else{
+					window.location.href = "/searchPos?page=1&name="+name;
+				}
+			})
+
+			$("#jumpToCon").click(function() {
+				var page = $("#page").val();
+				var lastPage = $("#lastPage").val();
+				console.log(lastPage);
+				var msg = "";
+				if($.trim(page) == ""){
+					msg = "页数不能为空";
+					$.ligerDialog.error(msg);
+					page.focus();
+					return false;
+				}else if($.trim(page) > $.trim(lastPage)) {
+					msg = "访问页数不存在";
+					$.ligerDialog.error(msg);
+					page.focus()
+					return false;
+				}else{
+					window.location.href = "/getAllPos?page="+page;
+				}
+			})
 	    })
 
-		$("#jumpToCon").click(function submit() {
-			var page = $("#page");
-			var lastPage = $("#lastPage");
-			console.log(lastPage);
-			var msg = "";
-			if($.trim(page.val()) == ""){
-				msg = "页数不能为空";
-				$.ligerDialog.error(msg);
-				page.focus();
-				return false;
-			}else if($.trim(page.val()) > $.trim(lastPage.val())) {
-				msg = "访问页数不存在";
-				$.ligerDialog.error(msg);
-				page.focus()
-				return false;
-			}else{
-				$("#jumpToCon").submit();
-				return true;
-			}
-		})
+
+
+
 	</script>
 </head>
 <body>
@@ -108,9 +128,15 @@
 				    <table width="100%" border="0" cellpadding="0" cellspacing="0">
 					  <tr>
 					    <td class="font3">
-					    	职位名称：<input type="text" name="name">
-					    	 <input type="submit" value="搜索"/>
-					    	<input id="delete" type="button" value="删除"/>
+					    	职位名称：
+<%--							<form action="/searchPos">--%>
+								<input type="hidden" name="page" value="1">
+								<input type="text" name="name" id="searchName">
+								<input type="button" id="searchByName" value="搜索"/>
+								<input id="delete" type="button" value="删除"/>
+								<input id="reset" type="button" value="还原">
+<%--							</form>--%>
+
 					    </td>
 					  </tr>
 					</table>
@@ -174,10 +200,9 @@
 							<a href="/getAllPos?page=${currentPage+1}">下一页</a>
 						</c:if>
 						&nbsp;跳转到&nbsp;&nbsp;
-								<form action="/getAllPos" name="jumpToCon">
-									<input type="hidden" value="${lastPage}" name="lastPage">
-									<input style="text-align: center;BORDER-RIGHT: #aaaadd 1px solid; PADDING-RIGHT: 5px; BORDER-TOP: #aaaadd 1px solid; PADDING-LEFT: 5px; PADDING-BOTTOM: 2px; MARGIN: 2px; BORDER-LEFT: #aaaadd 1px solid; COLOR: #000099; PADDING-TOP: 2px; BORDER-BOTTOM: #aaaadd 1px solid; TEXT-DECORATION: none" type="text" size="2" name="page">&nbsp;
-									<input type="button" style="text-align: center;BORDER-RIGHT: #dedfde 1px solid; PADDING-RIGHT: 6px; BACKGROUND-POSITION: 50% bottom; BORDER-TOP: #dedfde 1px solid; PADDING-LEFT: 6px; PADDING-BOTTOM: 2px; BORDER-LEFT: #dedfde 1px solid; COLOR: #0061de; MARGIN-RIGHT: 3px; PADDING-TOP: 2px; BORDER-BOTTOM: #dedfde 1px solid; TEXT-DECORATION: none" value="确定" name="pager_jump_btn" onclick="submit()"></form>
+						<input type="hidden" value="${lastPage}" name="lastPage" id="lastPage">
+						<input style="text-align: center;BORDER-RIGHT: #aaaadd 1px solid; PADDING-RIGHT: 5px; BORDER-TOP: #aaaadd 1px solid; PADDING-LEFT: 5px; PADDING-BOTTOM: 2px; MARGIN: 2px; BORDER-LEFT: #aaaadd 1px solid; COLOR: #000099; PADDING-TOP: 2px; BORDER-BOTTOM: #aaaadd 1px solid; TEXT-DECORATION: none" type="text" size="2" name="page" id="page">&nbsp;
+						<input type="button" style="text-align: center;BORDER-RIGHT: #dedfde 1px solid; PADDING-RIGHT: 6px; BACKGROUND-POSITION: 50% bottom; BORDER-TOP: #dedfde 1px solid; PADDING-LEFT: 6px; PADDING-BOTTOM: 2px; BORDER-LEFT: #dedfde 1px solid; COLOR: #0061de; MARGIN-RIGHT: 3px; PADDING-TOP: 2px; BORDER-BOTTOM: #dedfde 1px solid; TEXT-DECORATION: none" value="确定" name="jumpToCon" id="jumpToCon">
 				</td>
 			</tr>
 			<tr align="center">
